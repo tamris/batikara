@@ -1,0 +1,111 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:sibatikgal/app/modules/profile_page/controllers/profile_page_controller.dart';
+
+class ProfilePageView extends GetView<ProfilePageController> {
+  const ProfilePageView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFB66437), // Background coklat
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(height: 40),
+              const CircleAvatar(
+                radius: 50,
+                backgroundColor: Colors.white,
+                child: Icon(Icons.person, size: 50, color: Colors.black),
+              ),
+              const SizedBox(height: 18),
+              Text(
+                "Budi Prasetya",
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Poppins',
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                "budiprstya@example.com",
+                style: const TextStyle(
+                  color: Colors.white70,
+                  fontSize: 14,
+                  fontFamily: 'Poppins',
+                ),
+              ),
+              const SizedBox(height: 18),
+              ElevatedButton(
+                onPressed: () {
+                  controller.editProfile();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                ),
+                child: const Text(
+                  'Edit Profil',
+                  style: TextStyle(fontFamily: 'Poppins'),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 24),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  children: [
+                    _buildMenuItem(Icons.history, "Riwayat Pengenalan Batik",
+                        controller.goToHistory),
+                    _buildDivider(),
+                    _buildMenuItem(
+                        Icons.favorite, "Favorit", controller.goToFavorite),
+                    _buildDivider(),
+                    _buildMenuItem(
+                        Icons.security, "Keamanan", controller.goToSecurity),
+                    _buildDivider(),
+                    _buildMenuItem(
+                        Icons.info, "Tentang Aplikasi", controller.goToAbout),
+                    _buildDivider(),
+                    _buildMenuItem(Icons.logout, "LogOut", controller.logout),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMenuItem(IconData icon, String title, VoidCallback onTap) {
+    return ListTile(
+      leading: Icon(icon, color: Colors.black),
+      title: Text(title),
+      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+      onTap: onTap,
+    );
+  }
+
+  Widget _buildDivider() {
+    return const Divider(
+      height: 1,
+      color: Colors.black26,
+      indent: 16,
+      endIndent: 16,
+    );
+  }
+}

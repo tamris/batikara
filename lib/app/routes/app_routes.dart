@@ -1,0 +1,40 @@
+part of 'app_pages.dart';
+// DO NOT EDIT. This is code generated via package:get_cli/get_cli.dart
+
+abstract class Routes {
+  Routes._();
+  static const HOME = _Paths.HOME;
+  static const MAIN = _Paths.MAIN;
+  static const LOGIN = _Paths.LOGIN;
+  static const GALERY = _Paths.GALERY;
+  static const SCNA_PAGE = _Paths.SCNA_PAGE;
+  static const REGISTER = _Paths.REGISTER;
+  static const RESET_PASSWORD = _Paths.RESET_PASSWORD;
+  static const PROFILE_PAGE = _Paths.PROFILE_PAGE;
+  static const SECURITY = _Paths.SECURITY;
+  static const EVENT = _Paths.EVENT;
+  static const JEJAK = _Paths.JEJAK;
+  static const QUIZ = _Paths.QUIZ;
+  static const AKTIVITAS = _Paths.AKTIVITAS;
+  static const INFORMASI = _Paths.INFORMASI;
+  static const EDIT_PROFILE = _Paths.EDIT_PROFILE;
+}
+
+abstract class _Paths {
+  _Paths._();
+  static const HOME = '/home';
+  static const MAIN = '/main';
+  static const LOGIN = '/login';
+  static const GALERY = '/galery';
+  static const SCNA_PAGE = '/scna-page';
+  static const REGISTER = '/register';
+  static const RESET_PASSWORD = '/reset-password';
+  static const PROFILE_PAGE = '/profile-page';
+  static const SECURITY = '/security';
+  static const EVENT = '/event';
+  static const JEJAK = '/jejak';
+  static const QUIZ = '/quiz';
+  static const AKTIVITAS = '/aktivitas';
+  static const INFORMASI = '/informasi';
+  static const EDIT_PROFILE = '/edit-profile';
+}
