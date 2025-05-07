@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../views/detail_informasi_view.dart'; // Pastikan path ini sesuai dengan project kamu
 
 class HomeInfoCard extends StatelessWidget {
   final String title;
@@ -22,6 +24,7 @@ class HomeInfoCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Gambar
           Container(
             height: 130,
             width: double.infinity,
@@ -34,23 +37,38 @@ class HomeInfoCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
+
+          // Judul
           Text(
             title,
             style: const TextStyle(
               fontFamily: 'Poppins',
               fontSize: 15,
               height: 1.5,
+              fontWeight: FontWeight.w500,
             ),
             maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
+
           const Spacer(),
+
+          // Tombol Detail
           Align(
             alignment: Alignment.centerRight,
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Get.to(() => DetailInformasiView(
+                      title: title,
+                      imagePath: imagePath,
+                    ));
+              },
               child: const Text(
                 "Detail >",
-                style: TextStyle(fontSize: 14, fontFamily: 'Poppins'),
+                style: TextStyle(
+                  fontSize: 14,
+                  fontFamily: 'Poppins',
+                ),
               ),
             ),
           ),

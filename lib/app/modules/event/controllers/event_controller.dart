@@ -5,14 +5,14 @@ class EventModel {
   final String date;
   final String location;
   final String image;
-  final String? description;
+  final String description;
 
   EventModel({
     required this.title,
     required this.date,
     required this.location,
     required this.image,
-    this.description,
+    required this.description,
   });
 }
 
@@ -24,7 +24,15 @@ class EventController extends GetxController {
       location: 'Galery Batik Tegal',
       image: 'assets/img/event1.jpg',
       description:
-          'Nikmati ragam batik tradisional dan modern dari seluruh Indonesia, dengan pertunjukan budaya dan workshop membatik.',
+          'KOTA TEGAL - Dalam rangka memperingati Hari Batik Nasional pada tanggal 2 Oktober 2024 mendatang, '
+          'Dewan Kerajinan Nasional Daerah (Dekranasda) Kota Tegal akan menyelenggarakan Batik Fashion Show Tegal '
+          'Laka-laka dengan tema "Inspiring of The Sea". Hal ini disampaikan Plt. Kepala Dinas Tenaga Kerja dan '
+          'Perindustrian (Disnakerin) Kota Tegal, Rita Marlianawati pada saat Rapat Koordinasi persiapan Peringatan '
+          'Hari Batik Nasional tahun 2024, Kamis (5/9/2024) di Gedung Dekranasda Kota Tegal, Komplek Balai Kota Tegal.\n\n'
+          'Pj. Wali Kota Tegal, Dadang Somantri yang hadir dalam Rakor tersebut menyampaikan apresiasi pada rencana '
+          'pelaksanaan Batik Fashion Show Tegal Laka-laka dalam rangka memperingati Hari Batik Nasional tersebut. '
+          'Ia mengimbau agar acara tersebut dipersiapkan sebaik mungkin, dan tetap melibatkan penggiat, dan pengrajin '
+          'batik tegalan, agar semakin hidup.\n\nIlahasarua.(*)',
     ),
     EventModel(
       title: 'Seminar Hari Batik',
@@ -32,7 +40,15 @@ class EventController extends GetxController {
       location: 'Pendopo Balai Kota Tegal',
       image: 'assets/img/event2.jpg',
       description:
-          'Nikmati ragam batik tradisional dan modern dari seluruh Indonesia, dengan pertunjukan budaya dan workshop membatik.',
+          'KOTA TEGAL - Dalam rangka memperingati Hari Batik Nasional pada tanggal 2 Oktober 2024 mendatang, '
+          'Dewan Kerajinan Nasional Daerah (Dekranasda) Kota Tegal akan menyelenggarakan Batik Fashion Show Tegal '
+          'Laka-laka dengan tema "Inspiring of The Sea". Hal ini disampaikan Plt. Kepala Dinas Tenaga Kerja dan '
+          'Perindustrian (Disnakerin) Kota Tegal, Rita Marlianawati pada saat Rapat Koordinasi persiapan Peringatan '
+          'Hari Batik Nasional tahun 2024, Kamis (5/9/2024) di Gedung Dekranasda Kota Tegal, Komplek Balai Kota Tegal.\n\n'
+          'Pj. Wali Kota Tegal, Dadang Somantri yang hadir dalam Rakor tersebut menyampaikan apresiasi pada rencana '
+          'pelaksanaan Batik Fashion Show Tegal Laka-laka dalam rangka memperingati Hari Batik Nasional tersebut. '
+          'Ia mengimbau agar acara tersebut dipersiapkan sebaik mungkin, dan tetap melibatkan penggiat, dan pengrajin '
+          'batik tegalan, agar semakin hidup.\n\nIlahasarua.(*)',
     ),
     EventModel(
       title: 'Festival Batik',

@@ -1,4 +1,3 @@
-// view/gallery_view.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/galery_controller.dart';
@@ -49,28 +48,41 @@ class GalleryView extends GetView<GalleryController> {
                 ),
                 itemBuilder: (context, index) {
                   final item = filteredItems[index];
-                  return Column(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
+                  final imageName = item.toLowerCase().replaceAll(' ', '_');
+
+                  return InkWell(
+                    onTap: () {
+                      Get.toNamed('/gallery-detail', arguments: item);
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Expanded(
+                          child: ClipRRect(
                             borderRadius: BorderRadius.circular(16),
+                            child: Image.asset(
+                              'assets/images/$imageName.jpg',
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(Icons.thumb_up_alt_outlined, size: 16),
-                          SizedBox(width: 8),
-                          Icon(Icons.comment_outlined, size: 16),
-                        ],
-                      ),
-                      const SizedBox(height: 4),
-                      Text(item, style: const TextStyle(fontSize: 14)),
-                    ],
+                        const SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(Icons.thumb_up_alt_outlined, size: 16),
+                            SizedBox(width: 8),
+                          ],
+                        ),
+                        const SizedBox(height: 4),
+                        Center(
+                          child: Text(
+                            item,
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 },
               );

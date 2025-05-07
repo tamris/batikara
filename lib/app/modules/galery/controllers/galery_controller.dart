@@ -3,9 +3,14 @@ import 'package:get/get.dart';
 
 class GalleryController extends GetxController {
   final allItems = [
-    'Kawung', 'Parang', 'Truntum', 'Mega Mendung',
-    'Sekar Jagad', 'Lereng', 'Ceplok', 'Nitik',
-    'Sido Mukti', 'Gurdo', 'Tambal', 'Sawat'
+    'Gribigian',
+    'Jago Mogok',
+    'Kembang Pacar',
+    'Poci Tahu Aci',
+    'Sekar Jagad',
+    'Sidomukti',
+    'Sidomulyo',
+    'Watu Pecah',
   ].obs;
 
   final filteredItems = <String>[].obs;
@@ -21,7 +26,8 @@ class GalleryController extends GetxController {
       filteredItems.assignAll(allItems);
     } else {
       filteredItems.assignAll(
-        allItems.where((item) => item.toLowerCase().contains(query.toLowerCase())),
+        allItems
+            .where((item) => item.toLowerCase().contains(query.toLowerCase())),
       );
     }
   }

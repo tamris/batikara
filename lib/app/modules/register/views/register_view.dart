@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import '../controllers/register_controller.dart';
 
 class RegisterView extends GetView<RegisterController> {
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +24,7 @@ class RegisterView extends GetView<RegisterController> {
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Form(
-                key: controller.formKey,
+                key: _formKey,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -36,15 +38,14 @@ class RegisterView extends GetView<RegisterController> {
                       ),
                     ),
                     SizedBox(height: 30),
-
                     buildTextField(
                       controller.usernameController,
                       hintText: "Name",
-                      validator: (value) =>
-                          value == null || value.isEmpty ? 'Tolong isi Nama kamu' : null,
+                      validator: (value) => value == null || value.isEmpty
+                          ? 'Tolong isi Nama kamu'
+                          : null,
                     ),
                     SizedBox(height: 20),
-
                     buildTextField(
                       controller.emailController,
                       hintText: "Email",
@@ -59,7 +60,6 @@ class RegisterView extends GetView<RegisterController> {
                       },
                     ),
                     SizedBox(height: 20),
-
                     Obx(() => buildTextField(
                           controller.passwordController,
                           hintText: "Password",
@@ -83,7 +83,6 @@ class RegisterView extends GetView<RegisterController> {
                           },
                         )),
                     SizedBox(height: 20),
-
                     Obx(() => buildTextField(
                           controller.confirmPasswordController,
                           hintText: "Konfirmasi Password",
@@ -104,7 +103,6 @@ class RegisterView extends GetView<RegisterController> {
                           },
                         )),
                     SizedBox(height: 15),
-
                     Row(
                       children: [
                         Text(
@@ -124,7 +122,6 @@ class RegisterView extends GetView<RegisterController> {
                       ],
                     ),
                     SizedBox(height: 15),
-
                     Obx(() => SizedBox(
                           width: 400,
                           height: 55,
@@ -135,13 +132,19 @@ class RegisterView extends GetView<RegisterController> {
                                 borderRadius: BorderRadius.circular(15),
                               ),
                             ),
-                            onPressed:
-                                controller.isLoading.value ? null : controller.register,
+                            onPressed: controller.isLoading.value
+                                ? null
+                                : () {
+                                    if (_formKey.currentState!.validate()) {
+                                      controller.register();
+                                    }
+                                  },
                             child: controller.isLoading.value
                                 ? SizedBox(
                                     height: 20,
                                     width: 20,
-                                    child: CircularProgressIndicator(color: Colors.white),
+                                    child: CircularProgressIndicator(
+                                        color: Colors.white),
                                   )
                                 : Text(
                                     'Daftar',
@@ -177,12 +180,12 @@ class RegisterView extends GetView<RegisterController> {
         controller: controller,
         obscureText: obscureText,
         validator: validator,
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: Colors.black), // warna teks disesuaikan
         decoration: InputDecoration(
           filled: true,
-          fillColor: Colors.white.withOpacity(0.2),
+          fillColor: Colors.white, // <-- diubah jadi solid
           hintText: hintText,
-          hintStyle: TextStyle(color: Colors.white70),
+          hintStyle: TextStyle(color: Colors.grey),
           errorStyle: TextStyle(color: Colors.redAccent),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),

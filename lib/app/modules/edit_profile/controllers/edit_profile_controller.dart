@@ -12,7 +12,7 @@ class EditProfileController extends GetxController {
   void pickDate(BuildContext context) async {
     final date = await showDatePicker(
       context: context,
-      initialDate: DateTime(2004, 10, 15),
+      initialDate: DateTime.now(), // Bisa default ke hari ini
       firstDate: DateTime(1950),
       lastDate: DateTime.now(),
     );

@@ -8,9 +8,9 @@ class EditProfileView extends StatelessWidget {
     final controller = Get.find<EditProfileController>();
 
     return Scaffold(
-      backgroundColor: Color(0xFFA4552C),
+      backgroundColor: Color(0xFFDA7137),
       appBar: AppBar(
-        backgroundColor: Color(0xFFA4552C),
+        backgroundColor: Color(0xFFDA7137),
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.white),
@@ -147,21 +147,27 @@ class EditProfileView extends StatelessWidget {
           SizedBox(height: 6),
           InkWell(
             onTap: () => controller.pickDate(context),
-            child: InputDecorator(
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: Text(
-                controller.birthDate.value,
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
+            child: Obx(() => InputDecorator(
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: Text(
+                    controller.birthDate.value.isEmpty
+                        ? "Pilih tanggal"
+                        : controller.birthDate.value,
+                    style: TextStyle(
+                      color: controller.birthDate.value.isEmpty
+                          ? Colors.grey
+                          : Colors.black,
+                    ),
+                  ),
+                )),
           ),
         ],
       ),

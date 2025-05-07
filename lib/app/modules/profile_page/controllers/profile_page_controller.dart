@@ -9,12 +9,12 @@ class ProfilePageController extends GetxController {
 
   void goToHistory() {
     // Aksi Riwayat
-    Get.snackbar("Riwayat", "Navigasi ke Riwayat Pengenalan Batik.");
+    Get.toNamed('/riwayat');
   }
 
   void goToFavorite() {
     // Aksi Favorit
-    Get.snackbar("Favorit", "Navigasi ke Favorit.");
+    Get.toNamed('/favorit');
   }
 
   void goToSecurity() {
@@ -24,7 +24,7 @@ class ProfilePageController extends GetxController {
 
   void goToAbout() {
     // Aksi Tentang Aplikasi
-    Get.snackbar("Tentang Aplikasi", "Navigasi ke Tentang Aplikasi.");
+    Get.toNamed('/about-app');
   }
 
   void logout() {

@@ -3,12 +3,13 @@ import 'package:get/get.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          // Background
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
@@ -23,7 +24,7 @@ class LoginView extends GetView<LoginController> {
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Form(
-                key: controller.formKey,
+                key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -40,7 +41,10 @@ class LoginView extends GetView<LoginController> {
                     Row(
                       children: [
                         Text('Belum punya akun?',
-                            style: TextStyle(color: Colors.white70)),
+                            style: TextStyle(
+                                color: Colors.white70,
+                                fontFamily: 'Poppins',
+                                fontSize: 14)),
                         TextButton(
                           onPressed: () {
                             Get.toNamed('/register');
@@ -56,7 +60,6 @@ class LoginView extends GetView<LoginController> {
                     ),
                     SizedBox(height: 20),
 
-                    // Email
                     TextFormField(
                       controller: controller.emailController,
                       decoration: InputDecoration(
@@ -77,9 +80,8 @@ class LoginView extends GetView<LoginController> {
                         return null;
                       },
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 20),
 
-                    // Password
                     Obx(() => TextFormField(
                           controller: controller.passwordController,
                           obscureText: !controller.isPasswordVisible.value,
@@ -116,7 +118,10 @@ class LoginView extends GetView<LoginController> {
                         children: [
                           Text(
                             'Lupa kata sandi?',
-                            style: TextStyle(color: Colors.white70),
+                            style: TextStyle(
+                                color: Colors.white70,
+                                fontFamily: 'Poppins',
+                                fontSize: 14),
                           ),
                           TextButton(
                             onPressed: () {
@@ -140,7 +145,11 @@ class LoginView extends GetView<LoginController> {
                           child: ElevatedButton(
                             onPressed: controller.isLoading.value
                                 ? null
-                                : controller.login,
+                                : () {
+                                    if (_formKey.currentState!.validate()) {
+                                      controller.login();
+                                    }
+                                  },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.orange,
                               shape: RoundedRectangleBorder(

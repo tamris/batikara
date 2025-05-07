@@ -8,16 +8,16 @@ class ProfilePageView extends GetView<ProfilePageController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFB66437), // Background coklat
+      backgroundColor: const Color(0xFFDA7137), // Background coklat
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
               const SizedBox(height: 40),
-              const CircleAvatar(
+              CircleAvatar(
                 radius: 50,
                 backgroundColor: Colors.white,
-                child: Icon(Icons.person, size: 50, color: Colors.black),
+                backgroundImage: AssetImage('assets/icons/avatar.png'),
               ),
               const SizedBox(height: 18),
               Text(

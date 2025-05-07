@@ -8,7 +8,7 @@ class EventView extends GetView<EventController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFA45C25), // background oranye
+      backgroundColor: const Color(0xFFDA7137), // background oranye
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -19,7 +19,8 @@ class EventView extends GetView<EventController> {
               child: Row(
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    icon: const Icon(Icons.arrow_back_ios_new,
+                        color: Colors.white),
                     onPressed: () => Get.back(),
                   ),
                   const SizedBox(width: 8),

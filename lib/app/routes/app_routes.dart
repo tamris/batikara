@@ -18,6 +18,14 @@ abstract class Routes {
   static const AKTIVITAS = _Paths.AKTIVITAS;
   static const INFORMASI = _Paths.INFORMASI;
   static const EDIT_PROFILE = _Paths.EDIT_PROFILE;
+  static const ABOUT_APP = _Paths.ABOUT_APP;
+  static const NOTIFIKASI = _Paths.NOTIFIKASI;
+  static const MAINTENANCE = _Paths.MAINTENANCE;
+  static const OTP_VERIFICATION = _Paths.OTP_VERIFICATION;
+  static const SPLASH_SCREEN = _Paths.SPLASH_SCREEN;
+  static const MAPPING = _Paths.MAPPING;
+  static const RIWAYAT = _Paths.RIWAYAT;
+  static const FAVORIT = _Paths.FAVORIT;
 }
 
 abstract class _Paths {
@@ -37,4 +45,12 @@ abstract class _Paths {
   static const AKTIVITAS = '/aktivitas';
   static const INFORMASI = '/informasi';
   static const EDIT_PROFILE = '/edit-profile';
+  static const ABOUT_APP = '/about-app';
+  static const NOTIFIKASI = '/notifikasi';
+  static const MAINTENANCE = '/maintenance';
+  static const OTP_VERIFICATION = '/otp-verification';
+  static const SPLASH_SCREEN = '/splash-screen';
+  static const MAPPING = '/mapping';
+  static const RIWAYAT = '/riwayat';
+  static const FAVORIT = '/favorit';
 }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
+import 'package:sibatikgal/app/modules/quiz/bindings/quiz_binding.dart';
 import '../controllers/quiz_controller.dart';
+import 'quiz_question_view.dart';
 
 class QuizView extends GetView<QuizController> {
   const QuizView({Key? key}) : super(key: key);
@@ -9,13 +12,24 @@ class QuizView extends GetView<QuizController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text(
+          "Quiz",
+          style: TextStyle(
+              fontFamily: 'Poppins',
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.white),
+        ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.white,
+          ),
           onPressed: () => Get.back(),
         ),
         elevation: 0,
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        backgroundColor: const Color(0xFFDA7137),
+        // foregroundColor: Colors.black,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -25,7 +39,7 @@ class QuizView extends GetView<QuizController> {
             const Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Kuis\nBatik Tegalan',
+                'Quiz\nBatik Tegalan',
                 style: TextStyle(
                   fontSize: 40,
                   fontWeight: FontWeight.bold,
@@ -47,10 +61,10 @@ class QuizView extends GetView<QuizController> {
             const SizedBox(height: 32),
             Expanded(
               child: Center(
-                child: Image.asset(
-                  'assets/img/quiz_ilustrasi.png', // ganti sesuai file assets kamu
-                  width: 200,
-                  height: 200,
+                child: Lottie.asset(
+                  'assets/animations/quiz.json', // Path ke file JSON
+                  width: 600,
+                  height: 600,
                   fit: BoxFit.contain,
                 ),
               ),
@@ -60,10 +74,10 @@ class QuizView extends GetView<QuizController> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  // Aksi tombol "Mulai Kuis"
+                  Get.to(() => QuizQuestionView(), binding: QuizBinding());
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFA45C25),
+                  backgroundColor: const Color(0xFFDA7137),
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),

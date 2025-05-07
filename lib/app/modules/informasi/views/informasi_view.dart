@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../home/views/detail_informasi_view.dart';
+
 class InformasiView extends StatelessWidget {
   const InformasiView({Key? key}) : super(key: key);
 
@@ -18,7 +20,11 @@ class InformasiView extends StatelessWidget {
         ),
         title: const Text(
           'Informasi',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(
+              color: Colors.black,
+              fontFamily: 'Poppins',
+              fontSize: 20,
+              fontWeight: FontWeight.bold),
         ),
         centerTitle: false,
       ),
@@ -26,7 +32,6 @@ class InformasiView extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Search Field
             Container(
               decoration: BoxDecoration(
                 color: Colors.grey[200],
@@ -42,12 +47,14 @@ class InformasiView extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            // List of Informasi
             Expanded(
               child: ListView.builder(
-                itemCount: 5, // dummy data 10 item
+                itemCount: 5,
                 itemBuilder: (context, index) {
-                  return _buildInformasiCard();
+                  return _buildInformasiCard(
+                    title: 'Keunikan Motif Batik Tegalan',
+                    imagePath: 'assets/img/informasi1.jpg',
+                  );
                 },
               ),
             ),
@@ -57,62 +64,73 @@ class InformasiView extends StatelessWidget {
     );
   }
 
-  Widget _buildInformasiCard() {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 8,
-            offset: Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Gambar
-          ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-            child: Image.asset(
-              'assets/img/informasi1.jpg', // contoh gambar
-              height: 150,
-              width: double.infinity,
-              fit: BoxFit.cover,
+  Widget _buildInformasiCard({
+    required String title,
+    required String imagePath,
+  }) {
+    return GestureDetector(
+      onTap: () {
+        Get.to(() => DetailInformasiView(
+              title: title,
+              imagePath: imagePath,
+            ));
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 8,
+              offset: Offset(0, 4),
             ),
-          ),
-          // Text bagian bawah
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
-                  "Keunikan Motif Batik Tegalan",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                    fontFamily: 'Poppins',
-                  ),
-                  maxLines: 1,
-                ),
-                SizedBox(height: 10),
-                Text(
-                  "Dalam rangka memperingati Hari Batik Nasional pada tanggal 2 Oktober 2024 mendatang, Dalam rangka memperingati Hari Batik Nasional pada tanggal 2 Oktober 2024 mendatang",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.black54,
-                    fontFamily: 'Poppins',
-                  ),
-                  maxLines: 3,
-                ),
-              ],
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(16)),
+              child: Image.asset(
+                imagePath,
+                height: 150,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-        ],
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      fontFamily: 'Poppins',
+                    ),
+                    maxLines: 1,
+                  ),
+                  const SizedBox(height: 10),
+                  const Text(
+                    "Dalam rangka memperingati Hari Batik Nasional pada tanggal 2 Oktober 2024 mendatang, Dewan Kerajinan Nasional Daerah (Dekranasda) Kota Tegal akan menyelenggarakan Batik Fashion Show Tegal Laka-laka dengan tema",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.black54,
+                      fontFamily: 'Poppins',
+                    ),
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -40,7 +40,6 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
                       ),
                     ),
                     const SizedBox(height: 30),
-                    
                     _buildTextField(
                       controller: controller.emailController,
                       hintText: "Email",
@@ -48,7 +47,6 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
                       key: const Key('emailField'),
                     ),
                     const SizedBox(height: 20),
-
                     _buildTextField(
                       controller: controller.passwordController,
                       hintText: "Password",
@@ -63,7 +61,6 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
                       ),
                     ),
                     const SizedBox(height: 20),
-
                     _buildTextField(
                       controller: controller.confirmPasswordController,
                       hintText: "Konfirmasi Password",
@@ -78,7 +75,6 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
                       ),
                     ),
                     const SizedBox(height: 15),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -91,7 +87,7 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
                           ),
                         ),
                         TextButton(
-                          onPressed: () => Get.toNamed('/register'),
+                          onPressed: () => Get.offNamed('/register'),
                           child: const Text(
                             'Daftar',
                             style: TextStyle(
@@ -104,37 +100,36 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
                       ],
                     ),
                     const SizedBox(height: 15),
-
                     SizedBox(
                       width: 400,
                       height: 55,
                       child: Obx(() => ElevatedButton(
-                        onPressed: controller.isLoading.value
-                            ? null
-                            : controller.resetPassword,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.orange,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                        ),
-                        child: controller.isLoading.value
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                ),
-                              )
-                            : const Text(
-                                'Reset',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontFamily: 'Poppins',
-                                ),
+                            onPressed: controller.isLoading.value
+                                ? null
+                                : controller.resetPassword,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.orange,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15),
                               ),
-                      )),
+                            ),
+                            child: controller.isLoading.value
+                                ? const SizedBox(
+                                    height: 20,
+                                    width: 20,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : const Text(
+                                    'Reset',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontFamily: 'Poppins',
+                                    ),
+                                  ),
+                          )),
                     ),
                     const SizedBox(height: 15),
                   ],
@@ -163,17 +158,17 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
         controller: controller,
         obscureText: obscureText,
         validator: validator,
+        style: TextStyle(color: Colors.grey),
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: const TextStyle(color: Colors.white70),
+          hintStyle: TextStyle(color: Colors.grey),
           filled: true,
-          fillColor: Colors.white.withOpacity(0.1),
+          fillColor: Colors.white,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
           ),
           suffixIcon: suffixIcon,
         ),
-        style: const TextStyle(color: Colors.white),
       ),
     );
   }

@@ -11,13 +11,22 @@ class DetailEventView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFFA45C25),
-        title: const Text('Detail Event'),
-        iconTheme: const IconThemeData(color: Colors.white),
-        titleTextStyle: const TextStyle(
-          color: Colors.white,
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
+        backgroundColor: const Color(0xFFDA7137),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
+          onPressed: () => Get.back(),
+        ),
+        title: Row(
+          children: const [
+            Text(
+              'Detail Event',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
         ),
       ),
       body: SingleChildScrollView(
@@ -60,7 +69,10 @@ class DetailEventView extends StatelessWidget {
                     children: [
                       const Icon(Icons.location_on, size: 18),
                       const SizedBox(width: 6),
-                      Text(event.location),
+                      Text(
+                        event.location,
+                        style: TextStyle(fontFamily: 'Poppins'),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 20),
@@ -76,17 +88,16 @@ class DetailEventView extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    event.description ??
-                        'Event ini adalah acara yang sangat menarik dan informatif, cocok untuk semua kalangan.',
+                    event.description,
                     style: const TextStyle(
                       fontSize: 14,
                       fontFamily: 'Poppins',
                       color: Colors.black87,
                     ),
+                    textAlign: TextAlign.justify,
                   ),
 
                   const SizedBox(height: 24),
-
 
                   // const SizedBox(height: 32),
                 ],
