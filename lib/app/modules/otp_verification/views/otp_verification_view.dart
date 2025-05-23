@@ -23,7 +23,7 @@ class OtpVerificationView extends StatelessWidget {
               children: [
                 const SizedBox(height: 20),
                 Lottie.asset(
-                  'assets/animations/email.json', // Ganti dengan animasi kamu
+                  'assets/animations/email.json',
                   height: 200,
                 ),
                 const SizedBox(height: 20),
@@ -71,35 +71,33 @@ class OtpVerificationView extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 30),
-                Obx(() => ElevatedButton(
-                      onPressed: controller.otpCode.value.length == 6
-                          ? () {
-                              // Lanjutkan proses verifikasi
-                              Get.offNamed('/login');
-                            }
-                          : null,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFFDA7137),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 60, vertical: 16),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                Obx(() => controller.isLoading.value
+                    ? CircularProgressIndicator()
+                    : ElevatedButton(
+                        onPressed: controller.otpCode.value.length == 6
+                            ? () => controller
+                                .onOtpCompleted(controller.otpCode.value)
+                            : null,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFFDA7137),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 60, vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
-                      ),
-                      child: const Text(
-                        'Verifikasi',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: 'Poppins',
-                          color: Colors.white,
+                        child: const Text(
+                          'Verifikasi',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontFamily: 'Poppins',
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                    )),
+                      )),
                 const SizedBox(height: 20),
                 TextButton(
-                  onPressed: () {
-                    // Aksi kirim ulang OTP
-                  },
+                  onPressed: controller.resendOtp,
                   child: const Text(
                     'Kirim ulang kode',
                     style: TextStyle(color: Color(0xFFDA7137)),
