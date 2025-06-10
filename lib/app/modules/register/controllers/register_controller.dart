@@ -1,7 +1,11 @@
 // lib/controllers/register_controller.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:sibatikgal/app/data/providers/register_service.dart';
+
+import '../../../data/providers/oauth_service.dart';
+import '../../../routes/app_pages.dart';
 
 class RegisterController extends GetxController {
   final usernameController = TextEditingController();
@@ -11,8 +15,11 @@ class RegisterController extends GetxController {
 
   var isPasswordVisible = false.obs;
   var isLoading = false.obs;
+  var isGoogleLoading = false.obs;
 
   final RegisterService _registerService = RegisterService();
+  final GoogleAuthService _googleAuthService = GoogleAuthService();
+  final GetStorage _storage = GetStorage();
 
   bool isValidEmail(String value) {
     final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
@@ -71,5 +78,33 @@ class RegisterController extends GetxController {
       Get.snackbar('Gagal', result['message'],
           backgroundColor: Colors.red, colorText: Colors.white);
     }
+  }
+
+  Future<void> loginWithGoogle() async {
+    isGoogleLoading.value = true;
+
+    final result = await _googleAuthService.signInAndAuthenticate();
+
+    isGoogleLoading.value = false;
+
+    if (result == null || result['success'] == false) {
+      final message =
+          result?['message'] ?? 'Google sign-in gagal atau dibatalkan';
+      Get.snackbar("Login Gagal", message,
+          backgroundColor: Colors.red, colorText: Colors.white);
+      return;
+    }
+
+    final data = result['data'];
+    final accessToken = data['access_token'];
+    final email = data['email'];
+
+    _storage.write('token', accessToken);
+    _storage.write('email', email);
+
+    Get.snackbar("Halo", "Selamat datang, $email",
+        backgroundColor: Colors.green, colorText: Colors.white);
+
+    Get.offAllNamed(Routes.MAIN);
   }
 }

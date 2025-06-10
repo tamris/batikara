@@ -3,13 +3,43 @@ import 'package:get/get.dart';
 
 class DetailInformasiView extends StatelessWidget {
   final String title;
-  final String imagePath;
+  final String imageUrl;
+  final String description;
+  final DateTime? date;
 
   const DetailInformasiView({
     Key? key,
     required this.title,
-    required this.imagePath,
+    required this.imageUrl,
+    required this.description,
+    this.date,
   }) : super(key: key);
+
+  String getFormattedDate() {
+    if (date == null) return '-';
+    return '${date!.day.toString().padLeft(2, '0')} '
+        '${_monthName(date!.month)} '
+        '${date!.year}';
+  }
+
+  String _monthName(int month) {
+    const months = [
+      '',
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'Mei',
+      'Jun',
+      'Jul',
+      'Agu',
+      'Sep',
+      'Okt',
+      'Nov',
+      'Des'
+    ];
+    return months[month];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,24 +66,36 @@ class DetailInformasiView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Gambar artikel
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Image.asset(
-                imagePath,
+              child: Image.network(
+                imageUrl,
                 fit: BoxFit.cover,
                 width: double.infinity,
+                errorBuilder: (context, error, stackTrace) {
+                  return Image.asset(
+                    'assets/img/placeholder.jpg',
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                  );
+                },
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
-              "BERITA   |   05 Sep 2024",
-              style: TextStyle(
+
+            // Tanggal
+            Text(
+              "BERITA   |   ${getFormattedDate()}",
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Poppins',
                 fontSize: 14,
               ),
             ),
             const SizedBox(height: 12),
+
+            // Judul
             Text(
               title,
               style: const TextStyle(
@@ -63,13 +105,16 @@ class DetailInformasiView extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            const Text(
-              "KOTA TEGAL - Dalam rangka memperingati Hari Batik Nasional pada tanggal 2 Oktober 2024 mendatang, Dewan Kerajinan Nasional Daerah (Dekranasda) Kota Tegal akan menyelenggarakan Batik Fashion Show Tegal Laka-laka dengan tema \"Inspiring of The Sea\". Hal ini disampaikan Plt. Kepala Dinas Tenaga Kerja dan Perindustrian (Disnakerin) Kota Tegal, Rita Marlianawati pada saat Rapat Koordinasi persiapan Peringatan Hari Batik Nasional tahun 2024, Kamis (5/9/2024) di Gedung Dekranasda Kota Tegal, Komplek Balai Kota Tegal.\n\nPj. Wali Kota Tegal, Dading Somantri yang hadir dalam Rakor tersebut menyampaikan apresiasi pada rencana pelaksanaan Batik Fashion Show Tegal Laka-laka dalam rangka memperingati Hari Batik Nasional tersebut. Ia mengimbau agar acara tersebut dipersiapkan sebaik mungkin, dan tetap melibatkan penggiat, dan pengrajin batik agar semakin dikenal.\n\nIlahsasuar.(*),",
-              style: TextStyle(
+
+            // Isi artikel
+            Text(
+              description,
+              style: const TextStyle(
                 fontSize: 14,
                 height: 1.6,
                 fontFamily: 'Poppins',
               ),
+              textAlign: TextAlign.justify,
             ),
           ],
         ),

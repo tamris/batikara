@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/register_controller.dart';
+import '../widgets/loading_overlay.dart';
 
 class RegisterView extends GetView<RegisterController> {
   final _formKey = GlobalKey<FormState>();
@@ -128,6 +129,10 @@ class RegisterView extends GetView<RegisterController> {
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.orange,
+                              disabledBackgroundColor:
+                                  Colors.orange, // <-- tetap orange
+                              disabledForegroundColor:
+                                  Colors.white, // <-- tetap putih
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
                               ),
@@ -139,28 +144,76 @@ class RegisterView extends GetView<RegisterController> {
                                       controller.register();
                                     }
                                   },
-                            child: controller.isLoading.value
-                                ? SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: CircularProgressIndicator(
-                                        color: Colors.white),
-                                  )
-                                : Text(
-                                    'Daftar',
-                                    style: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                    ),
-                                  ),
+                            child: Text(
+                              'Daftar',
+                              style: TextStyle(
+                                fontFamily: 'Poppins',
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                            ),
                           ),
                         )),
+
+                    SizedBox(height: 20),
+
+                    // Atau
+                    Row(
+                      children: [
+                        Expanded(child: Divider(color: Colors.white70)),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Text(
+                            'atau',
+                            style: TextStyle(color: Colors.white70),
+                          ),
+                        ),
+                        Expanded(child: Divider(color: Colors.white70)),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 55,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          controller.loginWithGoogle();
+                        },
+                        icon: Image.asset(
+                          'assets/img/google.png',
+                          height: 28,
+                          width: 28,
+                        ),
+                        label: Text(
+                          'Lanjutkan dengan Google',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Poppins',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
           ),
+          Obx(() {
+            return (controller.isLoading.value ||
+                    controller.isGoogleLoading.value)
+                ? const LoadingOverlay()
+                : const SizedBox.shrink();
+          }),
         ],
       ),
     );

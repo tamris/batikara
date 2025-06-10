@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/login_controller.dart';
+import '../widgets/loading_overlay.dart';
 
 class LoginView extends GetView<LoginController> {
   final _formKey = GlobalKey<FormState>();
@@ -10,6 +11,7 @@ class LoginView extends GetView<LoginController> {
     return Scaffold(
       body: Stack(
         children: [
+          // Background image
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
@@ -18,8 +20,10 @@ class LoginView extends GetView<LoginController> {
               ),
             ),
           ),
+          // Dark overlay
           Container(color: Colors.black.withOpacity(0.4)),
 
+          // Main content
           Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -40,11 +44,14 @@ class LoginView extends GetView<LoginController> {
                     SizedBox(height: 10),
                     Row(
                       children: [
-                        Text('Belum punya akun?',
-                            style: TextStyle(
-                                color: Colors.white70,
-                                fontFamily: 'Poppins',
-                                fontSize: 14)),
+                        Text(
+                          'Belum punya akun?',
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                          ),
+                        ),
                         TextButton(
                           onPressed: () {
                             Get.toNamed('/register');
@@ -52,14 +59,16 @@ class LoginView extends GetView<LoginController> {
                           child: Text(
                             'Daftar',
                             style: TextStyle(
-                                color: Colors.orange,
-                                fontWeight: FontWeight.bold),
+                              color: Colors.orange,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ],
                     ),
                     SizedBox(height: 20),
 
+                    // Email
                     TextFormField(
                       controller: controller.emailController,
                       decoration: InputDecoration(
@@ -82,6 +91,7 @@ class LoginView extends GetView<LoginController> {
                     ),
                     SizedBox(height: 20),
 
+                    // Password
                     Obx(() => TextFormField(
                           controller: controller.passwordController,
                           obscureText: !controller.isPasswordVisible.value,
@@ -111,6 +121,7 @@ class LoginView extends GetView<LoginController> {
                         )),
                     SizedBox(height: 10),
 
+                    // Forgot Password
                     Align(
                       alignment: Alignment.centerRight,
                       child: Row(
@@ -139,39 +150,95 @@ class LoginView extends GetView<LoginController> {
                     ),
                     SizedBox(height: 15),
 
-                    Obx(() => SizedBox(
-                          width: double.infinity,
-                          height: 55,
-                          child: ElevatedButton(
-                            onPressed: controller.isLoading.value
-                                ? null
-                                : () {
-                                    if (_formKey.currentState!.validate()) {
-                                      controller.login();
-                                    }
-                                  },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.orange,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                            ),
-                            child: controller.isLoading.value
-                                ? CircularProgressIndicator(color: Colors.white)
-                                : Text(
-                                    'Login',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontFamily: 'Poppins'),
-                                  ),
+                    // Login Button
+                    SizedBox(
+                      width: double.infinity,
+                      height: 55,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            controller.login();
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.orange,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
                           ),
-                        )),
+                        ),
+                        child: Text(
+                          'Login',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontFamily: 'Poppins',
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 20),
+
+                    // Atau
+                    Row(
+                      children: [
+                        Expanded(child: Divider(color: Colors.white70)),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Text(
+                            'atau',
+                            style: TextStyle(color: Colors.white70),
+                          ),
+                        ),
+                        Expanded(child: Divider(color: Colors.white70)),
+                      ],
+                    ),
+
+                    SizedBox(height: 20),
+
+                    // Google Login
+                    SizedBox(
+                      width: double.infinity,
+                      height: 55,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          controller.loginWithGoogle();
+                        },
+                        icon: Image.asset(
+                          'assets/img/google.png',
+                          height: 28,
+                          width: 28,
+                        ),
+                        label: Text(
+                          'Lanjutkan dengan Google',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Poppins',
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
           ),
+
+          // Loading Overlay
+          Obx(() {
+            return (controller.isLoading.value ||
+                    controller.isGoogleLoading.value)
+                ? const LoadingOverlay()
+                : const SizedBox.shrink();
+          }),
         ],
       ),
     );

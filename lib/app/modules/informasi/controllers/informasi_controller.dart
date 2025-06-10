@@ -1,23 +1,23 @@
 import 'package:get/get.dart';
+import '../../../data/models/article_model.dart';
+import '../../../data/providers/article_service.dart';
 
 class InformasiController extends GetxController {
-  //TODO: Implement InformasiController
+  final ArticleService _articleService = ArticleService();
+  var articles = <Article>[].obs;
 
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
+    fetchArticles();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  void fetchArticles() async {
+    try {
+      final result = await _articleService.fetchArticles();
+      articles.value = result;
+    } catch (e) {
+      print('Failed to fetch articles: $e');
+    }
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

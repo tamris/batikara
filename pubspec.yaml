@@ -34,6 +34,7 @@ dependencies:
   pin_code_fields: ^8.0.0
   dio: ^5.4.0
   get_storage: ^2.1.1
+  google_sign_in: ^6.1.5
 
   
 
@@ -71,6 +72,7 @@ flutter:
     - assets/animations/quiz.json
     - assets/animations/email.json
     - assets/animations/maintenance.json
+    - assets/animations/loading.json
     - assets/icons/notification.png
     - assets/icons/quiz.png
     - assets/icons/event.png
@@ -93,6 +95,7 @@ flutter:
     - assets/img/splash1.png
     - assets/img/splash2.png
     - assets/img/mapp.jpg
+    - assets/img/google.png
     - assets/images/
     - assets/images/poci_tahu_aci.jpg
     - assets/images/gribigian.jpg

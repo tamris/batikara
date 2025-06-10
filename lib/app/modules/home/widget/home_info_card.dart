@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../views/detail_informasi_view.dart'; // Pastikan path ini sesuai dengan project kamu
+import 'package:sibatikgal/app/data/config/app_config.dart';
+import 'package:sibatikgal/app/data/models/article_model.dart';
+import 'package:sibatikgal/app/modules/informasi/views/detail_informasi_view.dart';
 
 class HomeInfoCard extends StatelessWidget {
-  final String title;
-  final String imagePath;
+  final Article article;
+  final Widget imageWidget;
 
   const HomeInfoCard({
     Key? key,
-    required this.title,
-    required this.imagePath,
+    required this.article,
+    required this.imageWidget,
   }) : super(key: key);
 
   @override
@@ -24,23 +26,20 @@ class HomeInfoCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Gambar
-          Container(
-            height: 130,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              image: DecorationImage(
-                image: AssetImage(imagePath),
-                fit: BoxFit.cover,
-              ),
+          // Gambar dinamis (network atau asset)
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: SizedBox(
+              height: 130,
+              width: double.infinity,
+              child: imageWidget,
             ),
           ),
           const SizedBox(height: 10),
 
           // Judul
           Text(
-            title,
+            article.title,
             style: const TextStyle(
               fontFamily: 'Poppins',
               fontSize: 15,
@@ -59,8 +58,10 @@ class HomeInfoCard extends StatelessWidget {
             child: TextButton(
               onPressed: () {
                 Get.to(() => DetailInformasiView(
-                      title: title,
-                      imagePath: imagePath,
+                      title: article.title,
+                      imageUrl: '${AppConfig.baseUrl}${article.imageUrl}',
+                      description: article.description,
+                      date: article.createdAt,
                     ));
               },
               child: const Text(

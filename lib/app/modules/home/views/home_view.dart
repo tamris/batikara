@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../data/config/app_config.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/home_controller.dart';
 import '../widget/home_info_card.dart';
@@ -51,11 +52,17 @@ class HomeView extends GetView<HomeController> {
                             const SizedBox(height: 12),
                             Row(
                               children: [
-                                const CircleAvatar(
-                                  radius: 30,
-                                  backgroundImage:
-                                      AssetImage('assets/icons/avatar.png'),
-                                ),
+                                Obx(() => CircleAvatar(
+                                      radius: 30,
+                                      backgroundImage: controller
+                                              .profileImage.isEmpty
+                                          ? const AssetImage(
+                                              'assets/icons/avatar.png')
+                                          : NetworkImage(
+                                                  '${AppConfig.baseUrl}${controller.profileImage}')
+                                              as ImageProvider,
+                                    )),
+
                                 const SizedBox(width: 16),
                                 // Container(
                                 //   width: isTablet ? 400 : 250,
@@ -195,30 +202,44 @@ class HomeView extends GetView<HomeController> {
                               ],
                             ),
                             const SizedBox(height: 16),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: AspectRatio(
-                                    aspectRatio: 3 / 4.5,
-                                    child: HomeInfoCard(
-                                      title: "Keunikan Motif Batik Tegalan",
-                                      imagePath: 'assets/img/informasi1.jpg',
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                Expanded(
-                                  child: AspectRatio(
-                                    aspectRatio: 3 / 4.5,
-                                    child: HomeInfoCard(
-                                      title:
-                                          "Peringati Hari Batik, Dekranasda Kota Tegal akan Gelar Lomba Batik Fashion Show",
-                                      imagePath: 'assets/img/informasi2.png',
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                            Obx(() {
+                              if (controller.articles.isEmpty) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              }
+
+                              return Row(
+                                children: controller.articles
+                                    .map((article) {
+                                      return Expanded(
+                                        child: AspectRatio(
+                                          aspectRatio: 3 / 4.5,
+                                          child: HomeInfoCard(
+                                            article: article,
+                                            imageWidget: Image.network(
+                                              '${AppConfig.baseUrl}${article.imageUrl}',
+                                              fit: BoxFit.cover,
+                                              errorBuilder:
+                                                  (context, error, stackTrace) {
+                                                return Image.asset(
+                                                  'assets/img/placeholder.jpg',
+                                                  fit: BoxFit.cover,
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    })
+                                    .toList()
+                                    .expand((widget) sync* {
+                                      yield widget;
+                                      yield const SizedBox(width: 12);
+                                    })
+                                    .toList()
+                                  ..removeLast(), // menghapus spasi terakhir
+                              );
+                            }),
                           ],
                         ),
                       ),

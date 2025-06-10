@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sibatikgal/app/data/config/app_config.dart';
+import 'package:sibatikgal/app/modules/informasi/controllers/informasi_controller.dart';
+import 'package:sibatikgal/app/modules/informasi/views/detail_informasi_view.dart';
 
-import '../../home/views/detail_informasi_view.dart';
-
-class InformasiView extends StatelessWidget {
+class InformasiView extends GetView<InformasiController> {
   const InformasiView({Key? key}) : super(key: key);
 
   @override
@@ -14,9 +15,7 @@ class InformasiView extends StatelessWidget {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Get.back();
-          },
+          onPressed: Get.back,
         ),
         title: const Text(
           'Informasi',
@@ -48,15 +47,19 @@ class InformasiView extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Expanded(
-              child: ListView.builder(
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return _buildInformasiCard(
-                    title: 'Keunikan Motif Batik Tegalan',
-                    imagePath: 'assets/img/informasi1.jpg',
-                  );
-                },
-              ),
+              child: Obx(() {
+                if (controller.articles.isEmpty) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                return ListView.builder(
+                  itemCount: controller.articles.length,
+                  itemBuilder: (context, index) {
+                    final article = controller.articles[index];
+                    return _buildInformasiCard(article);
+                  },
+                );
+              }),
             ),
           ],
         ),
@@ -64,15 +67,17 @@ class InformasiView extends StatelessWidget {
     );
   }
 
-  Widget _buildInformasiCard({
-    required String title,
-    required String imagePath,
-  }) {
+  Widget _buildInformasiCard(article) {
+    final imageUrl =
+        '${AppConfig.baseUrl}/${article.imageUrl.replaceFirst(RegExp(r"^/"), "")}';
+
     return GestureDetector(
       onTap: () {
         Get.to(() => DetailInformasiView(
-              title: title,
-              imagePath: imagePath,
+              title: article.title,
+              imageUrl: imageUrl,
+              description: article.description,
+              date: article.createdAt,
             ));
       },
       child: Container(
@@ -94,11 +99,19 @@ class InformasiView extends StatelessWidget {
             ClipRRect(
               borderRadius:
                   const BorderRadius.vertical(top: Radius.circular(16)),
-              child: Image.asset(
-                imagePath,
+              child: Image.network(
+                imageUrl,
                 height: 150,
                 width: double.infinity,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Image.asset(
+                    'assets/img/placeholder.jpg',
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: 150,
+                  );
+                },
               ),
             ),
             Padding(
@@ -107,7 +120,7 @@ class InformasiView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    article.title,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
@@ -116,9 +129,9 @@ class InformasiView extends StatelessWidget {
                     maxLines: 1,
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    "Dalam rangka memperingati Hari Batik Nasional pada tanggal 2 Oktober 2024 mendatang, Dewan Kerajinan Nasional Daerah (Dekranasda) Kota Tegal akan menyelenggarakan Batik Fashion Show Tegal Laka-laka dengan tema",
-                    style: TextStyle(
+                  Text(
+                    article.description,
+                    style: const TextStyle(
                       fontSize: 14,
                       color: Colors.black54,
                       fontFamily: 'Poppins',
