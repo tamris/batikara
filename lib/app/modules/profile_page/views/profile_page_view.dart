@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sibatikgal/app/modules/profile_page/controllers/profile_page_controller.dart';
+import '../../../data/config/app_config.dart';
 
 class ProfilePageView extends GetView<ProfilePageController> {
   const ProfilePageView({Key? key}) : super(key: key);
@@ -14,30 +15,34 @@ class ProfilePageView extends GetView<ProfilePageController> {
           child: Column(
             children: [
               const SizedBox(height: 40),
-              CircleAvatar(
-                radius: 50,
-                backgroundColor: Colors.white,
-                backgroundImage: AssetImage('assets/icons/avatar.png'),
-              ),
+              Obx(() => CircleAvatar(
+                    radius: 50,
+                    backgroundColor: Colors.white,
+                    backgroundImage: controller.profileImage.isEmpty
+                        ? const AssetImage('assets/icons/avatar.png')
+                        : NetworkImage(
+                                '${AppConfig.baseUrl}${controller.profileImage}')
+                            as ImageProvider,
+                  )),
               const SizedBox(height: 18),
-              Text(
-                "Budi Prasetya",
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Poppins',
-                ),
-              ),
+              Obx(() => Text(
+                    controller.name.value,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Poppins',
+                    ),
+                  )),
               const SizedBox(height: 4),
-              Text(
-                "budiprstya@example.com",
-                style: const TextStyle(
-                  color: Colors.white70,
-                  fontSize: 14,
-                  fontFamily: 'Poppins',
-                ),
-              ),
+              Obx(() => Text(
+                    controller.email.value,
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontSize: 14,
+                      fontFamily: 'Poppins',
+                    ),
+                  )),
               const SizedBox(height: 18),
               ElevatedButton(
                 onPressed: () {
@@ -72,6 +77,9 @@ class ProfilePageView extends GetView<ProfilePageController> {
                     _buildDivider(),
                     _buildMenuItem(
                         Icons.favorite, "Favorit", controller.goToFavorite),
+                    _buildDivider(),
+                    _buildMenuItem(Icons.manage_history, "Riwayat Login",
+                        controller.goToHistoryLogin),
                     _buildDivider(),
                     _buildMenuItem(
                         Icons.security, "Keamanan", controller.goToSecurity),

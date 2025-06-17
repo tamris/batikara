@@ -43,6 +43,8 @@ import '../modules/reset_password/bindings/reset_password_binding.dart';
 import '../modules/reset_password/views/reset_password_view.dart';
 import '../modules/riwayat/bindings/riwayat_binding.dart';
 import '../modules/riwayat/views/riwayat_view.dart';
+import '../modules/riwayat_login/bindings/riwayat_login_binding.dart';
+import '../modules/riwayat_login/views/riwayat_login_view.dart';
 import '../modules/scan_page/bindings/scna_page_binding.dart';
 import '../modules/scan_page/views/scna_page_view.dart';
 import '../modules/security/bindings/security_binding.dart';
@@ -191,6 +193,11 @@ class AppPages {
       name: _Paths.FAVORIT,
       page: () => const FavoritView(),
       binding: FavoritBinding(),
+    ),
+    GetPage(
+      name: _Paths.RIWAYAT_LOGIN,
+      page: () => const RiwayatLoginView(),
+      binding: RiwayatLoginBinding(),
     ),
   ];
 }

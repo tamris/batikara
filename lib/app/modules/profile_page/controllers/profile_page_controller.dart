@@ -1,34 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import '../../../data/providers/user_service.dart';
 
 class ProfilePageController extends GetxController {
+  final _storage = GetStorage();
+  final _userService = UserService();
+
+  var name = ''.obs;
+  var email = ''.obs;
+  var profileImage = ''.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchProfile(); // 👈 panggil saat controller diinit
+  }
+
+  void fetchProfile() async {
+    final profile = await _userService.fetchProfile();
+    if (profile != null) {
+      name.value = profile['username'] ?? 'User';
+      email.value = profile['email'] ?? 'user@example.com';
+      profileImage.value = profile['profile_picture'] ?? '';
+      print("✅ Profile loaded: ${name.value}");
+    } else {
+      print("❌ Gagal ambil profil di ProfilePage");
+    }
+  }
+
   void editProfile() {
-    // Aksi saat klik Edit Profile
     Get.toNamed('/edit-profile');
   }
 
   void goToHistory() {
-    // Aksi Riwayat
     Get.toNamed('/riwayat');
   }
 
+  void goToHistoryLogin() {
+    Get.toNamed('/riwayat-login');
+  }
+
   void goToFavorite() {
-    // Aksi Favorit
     Get.toNamed('/favorit');
   }
 
   void goToSecurity() {
-    // Aksi Keamanan
     Get.toNamed('/security');
   }
 
   void goToAbout() {
-    // Aksi Tentang Aplikasi
     Get.toNamed('/about-app');
   }
 
   void logout() {
-    // Aksi Logout
     Get.defaultDialog(
       title: "Konfirmasi Logout",
       middleText: "Apakah Anda yakin ingin keluar?",
@@ -36,8 +61,8 @@ class ProfilePageController extends GetxController {
       textConfirm: "OK",
       confirmTextColor: Get.isDarkMode ? null : Colors.white,
       onConfirm: () {
-        Get.offAllNamed(
-            '/login'); // ini akan hapus semua halaman sebelumnya dan langsung ke login
+        _storage.erase(); // Optional: hapus token saat logout
+        Get.offAllNamed('/login');
       },
     );
   }

@@ -1,29 +1,52 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:get_storage/get_storage.dart';
-
 import '../config/app_config.dart';
 
 class UserService {
   final _storage = GetStorage();
+  final Dio _dio = Dio();
 
   Future<Map<String, dynamic>?> fetchProfile() async {
     final token = _storage.read('token');
     if (token == null) return null;
 
-    final response = await http.get(
-      Uri.parse('${AppConfig.baseUrl}/user/profile'),
-      headers: {'Authorization': 'Bearer $token'},
-    );
+    try {
+      final response = await _dio.get(
+        '${AppConfig.baseUrl}/user/profile',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
 
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    } else {
-      print("Token: ${_storage.read('token')}");
-      print('Failed to fetch profile: ${response.statusCode}');
+      // Jika berhasil
+      return response.data;
+    } on DioException catch (e) {
+      print('❌ Dio error: ${e.response?.statusCode} - ${e.response?.data}');
+      return null;
+    } catch (e) {
+      print('❌ Unexpected error: $e');
       return null;
     }
   }
 
-  
+  Future<bool> updateProfile(Map<String, dynamic> data) async {
+    final token = _storage.read('token');
+    if (token == null) return false;
+
+    try {
+      final response = await _dio.put(
+        '${AppConfig.baseUrl}/user/profile',
+        data: data,
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
+      return response.statusCode == 200;
+    } catch (e) {
+      print("❌ Error update profile: $e");
+      return false;
+    }
+  }
 }

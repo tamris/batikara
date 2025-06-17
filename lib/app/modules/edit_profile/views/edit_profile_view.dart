@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../data/config/app_config.dart';
 import '../controllers/edit_profile_controller.dart';
 
 class EditProfileView extends StatelessWidget {
@@ -8,54 +9,62 @@ class EditProfileView extends StatelessWidget {
     final controller = Get.find<EditProfileController>();
 
     return Scaffold(
-      backgroundColor: Color(0xFFDA7137),
+      backgroundColor: const Color(0xFFDA7137),
       appBar: AppBar(
-        backgroundColor: Color(0xFFDA7137),
+        backgroundColor: const Color(0xFFDA7137),
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Get.back(),
         ),
-        title: Text(
+        title: const Text(
           "Edit Profil",
           style: TextStyle(color: Colors.white, fontFamily: 'Poppins'),
         ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             Center(
               child: Column(
                 children: [
-                  CircleAvatar(
-                    radius: 60,
-                    backgroundImage: AssetImage("assets/icons/avatar.png"),
+                  Obx(() => CircleAvatar(
+                        radius: 60,
+                        backgroundImage: controller.profileImage.value.isEmpty
+                            ? const AssetImage("assets/icons/avatar.png")
+                            : NetworkImage(
+                                    '${AppConfig.baseUrl}${controller.profileImage.value}')
+                                as ImageProvider,
+                      )),
+                  const SizedBox(height: 8),
+                  const Text(
+                    "Ubah Foto",
+                    style:
+                        TextStyle(color: Colors.white, fontFamily: 'Poppins'),
                   ),
-                  SizedBox(height: 8),
-                  Text("Ubah Foto",
-                      style: TextStyle(
-                          color: Colors.white, fontFamily: 'Poppins')),
                 ],
               ),
             ),
-            SizedBox(height: 24),
-            buildTextField("Nama Lengkap", controller.nameController),
-            buildTextField("Email", controller.emailController),
+            const SizedBox(height: 24),
+            buildTextField("Username", controller.nameController, true),
+            buildTextField(
+                "Email", controller.emailController, false), // 👈 non-editable
             buildDropdown(controller),
             buildDatePicker(context, controller),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
-                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
               ),
               onPressed: controller.saveProfile,
-              child: Text(
+              child: const Text(
                 "Simpan",
                 style: TextStyle(
                   color: Colors.black,
@@ -69,25 +78,27 @@ class EditProfileView extends StatelessWidget {
     );
   }
 
-  Widget buildTextField(String label, TextEditingController controller) {
+  Widget buildTextField(
+      String label, TextEditingController controller, bool editable) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(label,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w500,
               )),
-          SizedBox(height: 6),
+          const SizedBox(height: 6),
           TextField(
             controller: controller,
+            enabled: editable,
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white,
               contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -104,29 +115,29 @@ class EditProfileView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Jenis Kelamin",
+          const Text("Jenis Kelamin",
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w500,
               )),
-          SizedBox(height: 6),
-          DropdownButtonFormField<String>(
-            value: controller.selectedGender.value,
-            items: ['Laki-Laki', 'Perempuan']
-                .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                .toList(),
-            onChanged: (val) =>
-                controller.selectedGender.value = val ?? 'Laki-Laki',
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white,
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-          ),
+          const SizedBox(height: 6),
+          Obx(() => DropdownButtonFormField<String>(
+                value: controller.selectedGender.value,
+                items: ['Laki-Laki', 'Perempuan']
+                    .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                    .toList(),
+                onChanged: (val) =>
+                    controller.selectedGender.value = val ?? 'Laki-Laki',
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+              )),
         ],
       ),
     );
@@ -139,20 +150,20 @@ class EditProfileView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Tanggal Lahir",
+          const Text("Tanggal Lahir",
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.w500,
               )),
-          SizedBox(height: 6),
+          const SizedBox(height: 6),
           InkWell(
             onTap: () => controller.pickDate(context),
             child: Obx(() => InputDecorator(
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white,
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),

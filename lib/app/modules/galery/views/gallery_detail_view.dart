@@ -1,26 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../data/models/gallery_model.dart';
 
 class GalleryDetailView extends StatelessWidget {
   const GalleryDetailView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final String batikName = Get.arguments ?? 'Nama Batik';
-    final imageName = batikName.toLowerCase().replaceAll(' ', '_');
-
-    // Deskripsi contoh, bisa kamu ganti dengan data dinamis kalau pakai model
-    final description = '''
-Batik Poci Tahu Aci adalah motif batik khas Tegal yang terinspirasi dari dua kuliner ikonik daerah tersebut, yaitu teh poci dan tahu aci. Motif poci (teko tanah liat) melambangkan kehangatan dan keramahan masyarakat Tegal, sementara tahu aci mencerminkan kreativitas kuliner yang sederhana namun nikmat. Kombinasi keduanya menonjolkan identitas lokal dengan nilai filosofi kehidupan yang bersahaja dan guyub.
-
-Selain simbol kuliner, batik ini juga merepresentasikan kearifan lokal Tegal. Motif poci dengan detail tanah liatnya menggambarkan ketekunan perajin, sedangkan tahu aci menekankan kebersamaan. Warna alamiah seperti coklat dan hijau semakin memperkuat kesan hangat dan alami, menjadikannya warisan budaya yang terus dilestarikan.
-''';
+    final GalleryModel item = Get.arguments as GalleryModel;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          batikName,
-          style: TextStyle(fontFamily: 'Poppins'),
+          item.namaBatik,
+          style: const TextStyle(fontFamily: 'Poppins'),
         ),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
@@ -38,17 +31,19 @@ Selain simbol kuliner, batik ini juga merepresentasikan kearifan lokal Tegal. Mo
             // Gambar batik
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
-              child: Image.asset(
-                'assets/images/$imageName.jpg',
+              child: Image.network(
+                item.image,
                 width: double.infinity,
                 fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) =>
+                    const Icon(Icons.image_not_supported),
               ),
             ),
             const SizedBox(height: 16),
 
             // Nama Batik
             Text(
-              batikName,
+              item.namaBatik,
               style: const TextStyle(
                 fontSize: 24,
                 fontFamily: 'Poppins',
@@ -59,9 +54,12 @@ Selain simbol kuliner, batik ini juga merepresentasikan kearifan lokal Tegal. Mo
 
             // Deskripsi
             Text(
-              description,
+              item.deskripsi,
               style: const TextStyle(
-                  fontSize: 16, height: 1.5, fontFamily: 'Poppins'),
+                fontSize: 16,
+                height: 1.5,
+                fontFamily: 'Poppins',
+              ),
               textAlign: TextAlign.justify,
             ),
           ],

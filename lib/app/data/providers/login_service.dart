@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:sibatikgal/app/data/config/app_config.dart';
 
+import '../utils/device_utils.dart';
+
 class LoginService {
   final Dio _dio = Dio(BaseOptions(
     baseUrl: AppConfig.baseUrl, // Ganti dengan IP atau domain Flask kamu
@@ -13,11 +15,13 @@ class LoginService {
     required String password,
   }) async {
     try {
+      final deviceName = await getDeviceInfo();
       final response = await _dio.post(
         '/login',
         data: {
           'email': email,
           'password': password,
+          'device_name': deviceName, // Kirim ke backend
         },
       );
 
