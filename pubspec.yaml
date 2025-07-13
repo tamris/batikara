@@ -36,19 +36,33 @@ dependencies:
   get_storage: ^2.1.1
   google_sign_in: ^6.1.5
   device_info_plus: ^9.1.0
+  image_picker: ^1.0.4
+  camera: ^0.10.5+9
+  url_launcher: ^6.2.6
+  flutter_map: ^6.0.1
+  latlong2: ^0.9.1
+  location: ^5.0.3
+  collection: ^1.18.0
+  fl_chart: ^0.65.0 
 
-  
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   get: ^4.7.2
+  webview_flutter: ^4.10.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   lottie: ^2.7.0
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icons/icons_app.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -74,6 +88,7 @@ flutter:
     - assets/animations/email.json
     - assets/animations/maintenance.json
     - assets/animations/loading.json
+    - assets/animations/location.json
     - assets/icons/notification.png
     - assets/icons/quiz.png
     - assets/icons/event.png

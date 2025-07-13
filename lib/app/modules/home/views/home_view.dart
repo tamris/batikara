@@ -155,8 +155,8 @@ class HomeView extends GetView<HomeController> {
                                         width: itemWidth,
                                         child: HomeMenuItem(
                                           imagePath: 'assets/icons/quiz.png',
-                                          label: 'Quiz',
-                                          onTap: () => Get.toNamed('/quiz'),
+                                          label: 'Video',
+                                          onTap: () => Get.toNamed('/video'),
                                         ),
                                       ),
                                       SizedBox(
@@ -164,9 +164,8 @@ class HomeView extends GetView<HomeController> {
                                         child: HomeMenuItem(
                                           imagePath:
                                               'assets/icons/aktivitas.png',
-                                          label: 'Aktivitas',
-                                          onTap: () =>
-                                              Get.toNamed('/maintenance'),
+                                          label: 'Analysis',
+                                          onTap: () => Get.toNamed('/analisis'),
                                         ),
                                       ),
                                     ],

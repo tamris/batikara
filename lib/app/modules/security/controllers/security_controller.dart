@@ -1,48 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../data/providers/user_service.dart';
 
 class SecurityController extends GetxController {
   final currentPasswordController = TextEditingController();
   final newPasswordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
-  var isCurrentPasswordHidden = true.obs;
-  var isNewPasswordHidden = true.obs;
-  var isConfirmPasswordHidden = true.obs;
+  RxBool isCurrentPasswordHidden = true.obs;
+  RxBool isNewPasswordHidden = true.obs;
+  RxBool isConfirmPasswordHidden = true.obs;
 
-  void toggleCurrentPasswordVisibility() {
-    isCurrentPasswordHidden.value = !isCurrentPasswordHidden.value;
-  }
+  final _userService = UserService();
 
-  void toggleNewPasswordVisibility() {
-    isNewPasswordHidden.value = !isNewPasswordHidden.value;
-  }
+  void toggleCurrentPasswordVisibility() =>
+      isCurrentPasswordHidden.value = !isCurrentPasswordHidden.value;
+  void toggleNewPasswordVisibility() =>
+      isNewPasswordHidden.value = !isNewPasswordHidden.value;
+  void toggleConfirmPasswordVisibility() =>
+      isConfirmPasswordHidden.value = !isConfirmPasswordHidden.value;
 
-  void toggleConfirmPasswordVisibility() {
-    isConfirmPasswordHidden.value = !isConfirmPasswordHidden.value;
-  }
+  void savePassword() async {
+    final current = currentPasswordController.text.trim();
+    final newPw = newPasswordController.text.trim();
+    final confirm = confirmPasswordController.text.trim();
 
-  void savePassword() {
-    // Logika untuk ganti password
-    if (newPasswordController.text != confirmPasswordController.text) {
-      Get.snackbar(
-        "Error",
-        "Password baru dan konfirmasi tidak sama!",
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
-      );
+    if (current.isEmpty || newPw.isEmpty || confirm.isEmpty) {
+      Get.snackbar("Error", "Semua field wajib diisi",
+          backgroundColor: Colors.red.shade300, colorText: Colors.white);
       return;
     }
 
-    // Bisa tambahkan API request di sini untuk update password
-    Get.snackbar(
-      "Berhasil",
-      "Password berhasil diubah!",
-      backgroundColor: Colors.green,
-      colorText: Colors.white,
+    if (newPw != confirm) {
+      Get.snackbar("Error", "Password baru dan konfirmasi tidak cocok",
+          backgroundColor: Colors.red.shade300, colorText: Colors.white);
+      return;
+    }
+
+    final result = await _userService.changePassword(
+      currentPassword: current,
+      newPassword: newPw,
+      confirmPassword: confirm,
     );
 
-    Get.back(); // Kembali ke halaman sebelumnya
+    if (result['success']) {
+      Get.snackbar("Berhasil", result['message'],
+          backgroundColor: Colors.green.shade300, colorText: Colors.white);
+      currentPasswordController.clear();
+      newPasswordController.clear();
+      confirmPasswordController.clear();
+    } else {
+      Get.snackbar("Gagal", result['message'],
+          backgroundColor: Colors.red.shade300, colorText: Colors.white);
+    }
   }
 
   @override

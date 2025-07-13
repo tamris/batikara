@@ -32,6 +32,7 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
                   children: [
                     const Text(
                       'Reset Kata Sandi',
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 32,
@@ -39,42 +40,58 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
                         fontFamily: 'Poppins',
                       ),
                     ),
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Jangan khawatir, kami akan mengirim\ kode verifikasi mengganti password.',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 16,
+                        fontFamily: 'Poppins',
+                      ),
+                    ),
                     const SizedBox(height: 30),
+
                     _buildTextField(
                       controller: controller.emailController,
-                      hintText: "Email",
+                      hintText: "example@gmail.com",
                       validator: controller.validateEmail,
                       key: const Key('emailField'),
                     ),
-                    const SizedBox(height: 20),
-                    _buildTextField(
-                      controller: controller.passwordController,
-                      hintText: "Password",
-                      obscureText: !controller.isPasswordVisible.value,
-                      validator: controller.validatePassword,
-                      key: const Key('passwordField'),
-                      suffixIcon: IconButton(
-                        icon: Icon(controller.isPasswordVisible.value
-                            ? Icons.visibility
-                            : Icons.visibility_off),
-                        onPressed: controller.togglePasswordVisibility,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    _buildTextField(
-                      controller: controller.confirmPasswordController,
-                      hintText: "Konfirmasi Password",
-                      obscureText: !controller.isPasswordVisible.value,
-                      validator: controller.validateConfirmPassword,
-                      key: const Key('confirmPasswordField'),
-                      suffixIcon: IconButton(
-                        icon: Icon(controller.isPasswordVisible.value
-                            ? Icons.visibility
-                            : Icons.visibility_off),
-                        onPressed: controller.togglePasswordVisibility,
-                      ),
-                    ),
+
+                    // Error Message
+                    Obx(() => controller.errorMessage.value.isNotEmpty
+                        ? Container(
+                            margin: const EdgeInsets.only(top: 8),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: Colors.red.shade100,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: Colors.red),
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(Icons.warning,
+                                    color: Colors.red, size: 20),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    controller.errorMessage.value,
+                                    style: const TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 12,
+                                      fontFamily: 'Poppins',
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : const SizedBox()),
+
                     const SizedBox(height: 15),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -99,7 +116,10 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
                         ),
                       ],
                     ),
+
                     const SizedBox(height: 15),
+
+                    // Reset Button (ukuran dikembalikan)
                     SizedBox(
                       width: 400,
                       height: 55,
@@ -114,12 +134,8 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
                               ),
                             ),
                             child: controller.isLoading.value
-                                ? const SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: CircularProgressIndicator(
-                                      color: Colors.white,
-                                    ),
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
                                   )
                                 : const Text(
                                     'Reset',
@@ -131,7 +147,34 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
                                   ),
                           )),
                     ),
+
                     const SizedBox(height: 15),
+
+                    // Kembali Button (ukuran dikembalikan)
+                    SizedBox(
+                      width: 400,
+                      height: 55,
+                      child: OutlinedButton(
+                        onPressed: () => Get.back(),
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          side: BorderSide.none,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
+                        child: const Text(
+                          'Kembali',
+                          style: TextStyle(
+                            color: Colors.black87,
+                            fontSize: 16,
+                            fontFamily: 'Poppins',
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 30),
                   ],
                 ),
               ),
@@ -158,12 +201,14 @@ class ResetPasswordView extends GetView<ResetPasswordController> {
         controller: controller,
         obscureText: obscureText,
         validator: validator,
-        style: TextStyle(color: Colors.grey),
+        style: const TextStyle(color: Colors.black),
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: TextStyle(color: Colors.grey),
+          hintStyle: const TextStyle(color: Colors.grey),
           filled: true,
           fillColor: Colors.white,
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
           ),

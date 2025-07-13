@@ -1,60 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../data/providers/reset_password_service.dart';
 
 class ResetPasswordController extends GetxController {
   final formKey = GlobalKey<FormState>();
-
   final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final confirmPasswordController = TextEditingController();
 
   var isLoading = false.obs;
-  var isPasswordVisible = false.obs;
+  var errorMessage = ''.obs;
 
-  void togglePasswordVisibility() {
-    isPasswordVisible.value = !isPasswordVisible.value;
-  }
+  final ResetPasswordService _service = ResetPasswordService();
 
   String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Mohon isi email kamu';
+      return 'Email wajib diisi';
     }
-    if (!RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+    if (!GetUtils.isEmail(value.trim())) {
       return 'Format email tidak valid';
     }
     return null;
   }
 
-  String? validatePassword(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Password tidak boleh kosong';
+  Future<void> resetPassword() async {
+    if (!formKey.currentState!.validate()) return;
+
+    isLoading.value = true;
+    errorMessage.value = '';
+
+    final email = emailController.text.trim();
+
+    try {
+      final result = await _service.sendResetOtp(email);
+
+      if (!result['success']) {
+        errorMessage.value = result['message'];
+        return;
+      }
+
+      Get.toNamed('/reset/verify', arguments: email);
+    } catch (e) {
+      errorMessage.value = 'Terjadi kesalahan. Silakan coba lagi.';
+    } finally {
+      isLoading.value = false;
     }
-    if (value.length < 6) {
-      return 'Password minimal 6 karakter';
-    }
-    return null;
   }
 
-  String? validateConfirmPassword(String? value) {
-    if (value != passwordController.text) {
-      return 'Password tidak sama';
-    }
-    return null;
-  }
-
-  void resetPassword() {
-    if (formKey.currentState!.validate()) {
-      isLoading.value = true;
-      Future.delayed(const Duration(seconds: 2), () {
-        isLoading.value = false;
-        Get.snackbar(
-          'Berhasil',
-          'Password berhasil direset!',
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-        );
-        Get.offNamed('/login');
-      });
-    }
+  @override
+  void onClose() {
+    emailController.dispose();
+    super.onClose();
   }
 }

@@ -13,6 +13,7 @@ class HomeController extends GetxController {
   final ArticleService _articleService = ArticleService();
   final UserService _userService = UserService();
   final box = GetStorage();
+  final refreshTrigger = false.obs;
 
   @override
   void onInit() {
@@ -20,6 +21,10 @@ class HomeController extends GetxController {
     loadGreeting();
     loadUserProfile();
     loadArticles();
+
+    ever(refreshTrigger, (_) {
+      loadUserProfile();
+    });
   }
 
   void loadGreeting() {

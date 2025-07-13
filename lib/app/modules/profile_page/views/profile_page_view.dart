@@ -45,8 +45,11 @@ class ProfilePageView extends GetView<ProfilePageController> {
                   )),
               const SizedBox(height: 18),
               ElevatedButton(
-                onPressed: () {
-                  controller.editProfile();
+                onPressed: () async {
+                  final result = await Get.toNamed('/edit-profile');
+                  if (result == true) {
+                    controller.fetchProfile(); // 🔁 refresh data
+                  }
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,

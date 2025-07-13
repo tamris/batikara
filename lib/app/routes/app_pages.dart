@@ -4,6 +4,8 @@ import '../modules/about_app/bindings/about_app_binding.dart';
 import '../modules/about_app/views/about_app_view.dart';
 import '../modules/aktivitas/bindings/aktivitas_binding.dart';
 import '../modules/aktivitas/views/aktivitas_view.dart';
+import '../modules/analisis/bindings/analisis_binding.dart';
+import '../modules/analisis/views/analisis_view.dart';
 import '../modules/edit_profile/bindings/edit_profile_binding.dart';
 import '../modules/edit_profile/views/edit_profile_view.dart';
 import '../modules/event/bindings/event_binding.dart';
@@ -40,6 +42,10 @@ import '../modules/quiz/views/quiz_view.dart';
 import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
 import '../modules/reset_password/bindings/reset_password_binding.dart';
+import '../modules/reset_password/controllers/new_password_controller.dart';
+import '../modules/reset_password/controllers/reset_otp_verification_controller.dart';
+import '../modules/reset_password/views/reset_new_password_view.dart';
+import '../modules/reset_password/views/reset_otp_verification_view.dart';
 import '../modules/reset_password/views/reset_password_view.dart';
 import '../modules/riwayat/bindings/riwayat_binding.dart';
 import '../modules/riwayat/views/riwayat_view.dart';
@@ -52,6 +58,8 @@ import '../modules/security/views/security_view.dart';
 import '../modules/splash_screen/bindings/splash_screen_binding.dart';
 import '../modules/splash_screen/views/intro_view_view.dart';
 import '../modules/splash_screen/views/splash_screen_view.dart';
+import '../modules/video/bindings/video_binding.dart';
+import '../modules/video/views/video_view.dart';
 
 part 'app_routes.dart';
 
@@ -100,6 +108,21 @@ class AppPages {
       page: () => const ResetPasswordView(),
       binding: ResetPasswordBinding(),
     ),
+    GetPage(
+      name: '/reset/verify',
+      page: () => const ResetOtpVerificationView(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut(() => ResetOtpVerificationController());
+      }),
+    ),
+    GetPage(
+      name: '/reset/new-password',
+      page: () => const NewPasswordView(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut(() => NewPasswordController());
+      }),
+    ),
+
     GetPage(
       name: _Paths.PROFILE_PAGE,
       page: () => ProfilePageView(),
@@ -198,6 +221,16 @@ class AppPages {
       name: _Paths.RIWAYAT_LOGIN,
       page: () => const RiwayatLoginView(),
       binding: RiwayatLoginBinding(),
+    ),
+    GetPage(
+      name: _Paths.ANALISIS,
+      page: () => const AnalisisView(),
+      binding: AnalisisBinding(),
+    ),
+    GetPage(
+      name: _Paths.VIDEO,
+      page: () => const VideoView(),
+      binding: VideoBinding(),
     ),
   ];
 }

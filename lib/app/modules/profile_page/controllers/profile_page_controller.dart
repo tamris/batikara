@@ -18,20 +18,21 @@ class ProfilePageController extends GetxController {
   }
 
   void fetchProfile() async {
-    final profile = await _userService.fetchProfile();
-    if (profile != null) {
-      name.value = profile['username'] ?? 'User';
-      email.value = profile['email'] ?? 'user@example.com';
-      profileImage.value = profile['profile_picture'] ?? '';
-      print("✅ Profile loaded: ${name.value}");
-    } else {
-      print("❌ Gagal ambil profil di ProfilePage");
+    final data = await _userService.fetchProfile();
+    if (data != null) {
+      print("🎯 New profile fetched: $data");
+      profileImage.value = data['profile_picture'] ?? '';
+      name.value = data['username'] ?? '';
+      email.value = data['email'] ?? '';
     }
   }
 
-  void editProfile() {
-    Get.toNamed('/edit-profile');
-  }
+  // void editProfile() async {
+  //   final result = await Get.toNamed('/edit-profile');
+  //   if (result == true) {
+  //     fetchProfile(); // ⬅️ panggil ulang setelah simpan
+  //   }
+  // }
 
   void goToHistory() {
     Get.toNamed('/riwayat');

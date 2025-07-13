@@ -27,6 +27,8 @@ abstract class Routes {
   static const RIWAYAT = _Paths.RIWAYAT;
   static const FAVORIT = _Paths.FAVORIT;
   static const RIWAYAT_LOGIN = _Paths.RIWAYAT_LOGIN;
+  static const ANALISIS = _Paths.ANALISIS;
+  static const VIDEO = _Paths.VIDEO;
 }
 
 abstract class _Paths {
@@ -55,4 +57,6 @@ abstract class _Paths {
   static const RIWAYAT = '/riwayat';
   static const FAVORIT = '/favorit';
   static const RIWAYAT_LOGIN = '/riwayat-login';
+  static const ANALISIS = '/analisis';
+  static const VIDEO = '/video';
 }

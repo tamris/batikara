@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:sibatikgal/app/modules/mapping/controllers/mapping_controller.dart';
 
 import '../../galery/controllers/galery_controller.dart';
 import '../../home/controllers/home_controller.dart';
@@ -14,5 +15,6 @@ class MainBinding extends Bindings {
     Get.lazyPut<GalleryController>(() => GalleryController());
     Get.lazyPut<ScnaPageController>(() => ScnaPageController());
     Get.lazyPut<ProfilePageController>(() => ProfilePageController());
+    Get.lazyPut<MappingController>(() => MappingController());
   }
 }
