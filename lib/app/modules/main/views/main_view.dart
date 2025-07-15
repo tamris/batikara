@@ -11,7 +11,7 @@ class MainView extends GetView<MainController> {
   final List<Widget> pages = [
     HomeView(),
     GalleryView(),
-    ScnaPageView(),
+    ScanPageView(),
     MappingView(),
     ProfilePageView()
   ];

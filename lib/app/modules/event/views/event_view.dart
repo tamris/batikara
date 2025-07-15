@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sibatikgal/app/data/config/app_config.dart';
 import '../controllers/event_controller.dart';
+import 'package:lottie/lottie.dart'; 
 
 class EventView extends GetView<EventController> {
   const EventView({super.key});
@@ -37,6 +39,7 @@ class EventView extends GetView<EventController> {
               ),
             ),
             const SizedBox(height: 20),
+
             // Card Container
             Expanded(
               child: Container(
@@ -47,6 +50,20 @@ class EventView extends GetView<EventController> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
                 child: Obx(() {
+                  if (controller.isLoading.value) {
+                    return Center(
+                      child: SizedBox(
+                        width: 130,
+                        height: 130,
+                        child: Lottie.asset('assets/animations/loading.json'),
+                      ),
+                    );
+                  }
+
+                  if (controller.events.isEmpty) {
+                    return const Center(child: Text('Tidak ada event.'));
+                  }
+
                   return ListView.separated(
                     itemCount: controller.events.length,
                     separatorBuilder: (_, __) => const SizedBox(height: 20),
@@ -54,8 +71,7 @@ class EventView extends GetView<EventController> {
                       final event = controller.events[index];
                       return GestureDetector(
                         onTap: () {
-                          Get.toNamed('/event-detail',
-                              arguments: event); // ← navigasi ke detail
+                          Get.toNamed('/event-detail', arguments: event);
                         },
                         child: Container(
                           padding: const EdgeInsets.all(12),
@@ -75,11 +91,17 @@ class EventView extends GetView<EventController> {
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
-                                child: Image.asset(
-                                  event.image,
+                                child: Image.network(
+                                  '${AppConfig.baseUrl}/static/uploads/${event.image}',
                                   width: 120,
                                   height: 120,
                                   fit: BoxFit.cover,
+                                  errorBuilder: (_, __, ___) => Container(
+                                    width: 120,
+                                    height: 120,
+                                    color: Colors.grey[300],
+                                    child: const Icon(Icons.broken_image),
+                                  ),
                                 ),
                               ),
                               const SizedBox(width: 12),
@@ -97,7 +119,7 @@ class EventView extends GetView<EventController> {
                                     ),
                                     const SizedBox(height: 14),
                                     Text(
-                                      event.date,
+                                      controller.formatTanggalIndo(event.date),
                                       style: const TextStyle(
                                         fontSize: 14,
                                         fontFamily: 'Poppins',
@@ -112,7 +134,9 @@ class EventView extends GetView<EventController> {
                                         fontFamily: 'Poppins',
                                         color: Colors.black54,
                                       ),
-                                    ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    )
                                   ],
                                 ),
                               ),

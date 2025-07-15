@@ -100,7 +100,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.SCNA_PAGE,
-      page: () => const ScnaPageView(),
+      page: () => ScanPageView(),
       binding: ScnaPageBinding(),
     ),
     GetPage(

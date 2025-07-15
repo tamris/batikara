@@ -13,7 +13,7 @@ class MainBinding extends Bindings {
     Get.lazyPut<MainController>(() => MainController());
     Get.lazyPut(() => HomeController());
     Get.lazyPut<GalleryController>(() => GalleryController());
-    Get.lazyPut<ScnaPageController>(() => ScnaPageController());
+    Get.lazyPut<ScanPageController>(() => ScanPageController());
     Get.lazyPut<ProfilePageController>(() => ProfilePageController());
     Get.lazyPut<MappingController>(() => MappingController());
   }

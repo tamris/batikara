@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sibatikgal/app/data/config/app_config.dart';
+import 'package:sibatikgal/app/data/models/event_model.dart';
+
 import '../controllers/event_controller.dart';
 
 class DetailEventView extends StatelessWidget {
@@ -8,6 +11,7 @@ class DetailEventView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final EventModel event = Get.arguments as EventModel;
+    final controller = Get.find<EventController>();
 
     return Scaffold(
       appBar: AppBar(
@@ -16,68 +20,100 @@ class DetailEventView extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
           onPressed: () => Get.back(),
         ),
-        title: Row(
-          children: const [
-            Text(
-              'Detail Event',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
+        title: const Text(
+          'Detail Event',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            fontFamily: 'Poppins',
+          ),
         ),
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Gambar atas
-            Image.asset(
-              event.image,
-              width: double.infinity,
-              height: 350,
-              fit: BoxFit.cover,
+            // Gambar dari URL backend
+            ClipRRect(
+              borderRadius:
+                  const BorderRadius.vertical(bottom: Radius.circular(16)),
+              child: Image.network(
+                '${AppConfig.baseUrl}/static/uploads/${event.image}',
+                width: double.infinity,
+                height: 350,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => Container(
+                  width: double.infinity,
+                  height: 350,
+                  color: Colors.grey[300],
+                  child: const Icon(Icons.broken_image, size: 80),
+                ),
+              ),
             ),
             const SizedBox(height: 20),
 
-            // Informasi
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Judul
                   Text(
                     event.title,
                     style: const TextStyle(
-                      fontSize: 22,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                       fontFamily: 'Poppins',
                     ),
                   ),
                   const SizedBox(height: 12),
+
+                  // Waktu
                   Row(
                     children: [
-                      const Icon(Icons.calendar_today, size: 18),
-                      const SizedBox(width: 6),
-                      Text(event.date),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      const Icon(Icons.location_on, size: 18),
+                      const Icon(Icons.calendar_today,
+                          size: 18, color: Colors.blueAccent),
                       const SizedBox(width: 6),
                       Text(
-                        event.location,
-                        style: TextStyle(fontFamily: 'Poppins'),
+                        controller.formatTanggalIndo(event.date),
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'Poppins',
+                        ),
                       ),
                     ],
                   ),
+                  const SizedBox(height: 8),
+
+                  // Lokasi
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        Icons.location_on,
+                        size: 18,
+                        color: Colors.redAccent,
+                      ),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: Text(
+                          event.location,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontFamily: 'Poppins',
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.justify,
+                        ),
+                      ),
+                    ],
+                  ),
+
                   const SizedBox(height: 20),
 
-                  // Deskripsi Event
+                  // Label Deskripsi
                   const Text(
                     'Deskripsi',
                     style: TextStyle(
@@ -87,6 +123,8 @@ class DetailEventView extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
+
+                  // Isi Deskripsi
                   Text(
                     event.description,
                     style: const TextStyle(
@@ -98,8 +136,6 @@ class DetailEventView extends StatelessWidget {
                   ),
 
                   const SizedBox(height: 24),
-
-                  // const SizedBox(height: 32),
                 ],
               ),
             ),
