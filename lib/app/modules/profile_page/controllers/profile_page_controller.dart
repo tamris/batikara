@@ -56,15 +56,69 @@ class ProfilePageController extends GetxController {
 
   void logout() {
     Get.defaultDialog(
-      title: "Konfirmasi Logout",
-      middleText: "Apakah Anda yakin ingin keluar?",
-      textCancel: "Batal",
-      textConfirm: "OK",
-      confirmTextColor: Get.isDarkMode ? null : Colors.white,
-      onConfirm: () {
-        _storage.erase(); // Optional: hapus token saat logout
-        Get.offAllNamed('/login');
-      },
+      title: '',
+      contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+      content: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.red.withOpacity(0.1),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(Icons.logout, size: 40, color: Colors.red),
+          ),
+          const SizedBox(height: 20),
+          const Text(
+            "Logout dari aplikasi?",
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+              fontFamily: 'Poppins',
+            ),
+          ),
+          const SizedBox(height: 12),
+          const Text(
+            "Apakah Anda yakin ingin keluar?",
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey,
+              fontFamily: 'Poppins',
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextButton(
+                onPressed: () => Get.back(),
+                child: const Text("Batal",
+                    style: TextStyle(fontFamily: 'Poppins')),
+              ),
+              const SizedBox(width: 12),
+              ElevatedButton(
+                onPressed: () {
+                  _storage.erase(); // Hapus token
+                  Get.offAllNamed('/login');
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  foregroundColor: Colors.white,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                ),
+                child: const Text("Logout",
+                    style: TextStyle(fontFamily: 'Poppins')),
+              ),
+            ],
+          ),
+        ],
+      ),
+      radius: 15,
+      barrierDismissible: false,
     );
   }
 }

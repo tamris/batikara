@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class JejakView extends StatelessWidget {
   const JejakView({Key? key}) : super(key: key);
@@ -35,7 +36,7 @@ class JejakView extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Image.asset(
-                'assets/img/informasi2.png', // Ganti sesuai nama filemu
+                'assets/img/sejarah.jpg', // Ganti sesuai nama filemu
                 fit: BoxFit.cover,
               ),
             ),
@@ -50,15 +51,8 @@ class JejakView extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             const Text(
-              'KOTA TEGAL - Dalam rangka memperingati Hari Batik Nasional pada tanggal 2 Oktober 2024 mendatang, '
-              'Dewan Kerajinan Nasional Daerah (Dekranasda) Kota Tegal akan menyelenggarakan Batik Fashion Show Tegal '
-              'Laka-laka dengan tema "Inspiring of The Sea". Hal ini disampaikan Plt. Kepala Dinas Tenaga Kerja dan '
-              'Perindustrian (Disnakerin) Kota Tegal, Rita Marlianawati pada saat Rapat Koordinasi persiapan Peringatan '
-              'Hari Batik Nasional tahun 2024, Kamis (5/9/2024) di Gedung Dekranasda Kota Tegal, Komplek Balai Kota Tegal.\n\n'
-              'Pj. Wali Kota Tegal, Dadang Somantri yang hadir dalam Rakor tersebut menyampaikan apresiasi pada rencana '
-              'pelaksanaan Batik Fashion Show Tegal Laka-laka dalam rangka memperingati Hari Batik Nasional tersebut. '
-              'Ia mengimbau agar acara tersebut dipersiapkan sebaik mungkin, dan tetap melibatkan penggiat, dan pengrajin '
-              'batik tegalan, agar semakin hidup.\n\nIlahasarua.(*)',
+              'Sejarah Batik Tegalan berawal dari akulturasi budaya yang unik antara tradisi Keraton Mataram dan karakter masyarakat pesisir Tegal. Puncak perkembangannya terjadi pada abad ke-17 ketika para pengikut Amangkurat I dari Mataram mengungsi ke Tegal dan membawa serta keahlian membatik khas keraton. Di Tegal, teknik batik yang cenderung kaku dan halus ini berpadu dengan budaya lokal yang dinamis, melahirkan gaya batik baru yang khas. Perpaduan inilah yang membentuk identitas Batik Tegalan sebagai jembatan antara corak klasik pedalaman dan semangat kebebasan khas pesisir utara Jawa.\n\n'
+              'Karakteristik utama Batik Tegalan terletak pada warnanya yang tegas dan klasik—didominasi oleh sogan (cokelat), biru tua, dan hitam—serta goresan motifnya yang cenderung lebih besar dan bebas. Motif-motifnya kaya akan filosofi yang terinspirasi dari alam dan kehidupan sehari-hari, seperti Beras Wutah yang melambangkan kemakmuran dan Gedhong Kosong sebagai pengingat akan kerendahan hati. Melalui motif dan warnanya yang khas, Batik Tegalan tidak hanya menjadi selembar kain, tetapi juga cerminan sejarah dan kearifan lokal yang terus dijaga dan dikembangkan hingga saat ini.',
               textAlign: TextAlign.justify,
               style: TextStyle(
                 fontSize: 15,
@@ -80,8 +74,16 @@ class JejakView extends StatelessWidget {
             Align(
               alignment: Alignment.center,
               child: GestureDetector(
-                onTap: () {
-                  // aksi klik link video
+                onTap: () async {
+                  // Jadikan fungsinya async
+                  // Ganti URL ini dengan link YouTube yang Anda inginkan
+                  final Uri url = Uri.parse(
+                      'https://youtu.be/riMV6didcKY?si=37PZle3rcs0JKVQS');
+
+                  if (!await launchUrl(url)) {
+                    // Jika gagal membuka URL, tampilkan pesan error di console
+                    print('Could not launch $url');
+                  }
                 },
                 child: const Text(
                   'Materi Selanjutnya',
@@ -91,6 +93,8 @@ class JejakView extends StatelessWidget {
                     fontSize: 14,
                     color: Colors.blue,
                     decoration: TextDecoration.underline,
+                    decorationColor:
+                        Colors.blue, // Opsional: agar warna garis bawah sama
                   ),
                 ),
               ),

@@ -100,6 +100,7 @@ flutter:
     - assets/icons/map.png
     - assets/icons/profile.png
     - assets/icons/scan.png
+    - assets/icons/vdo.png
     - assets/img/background.png
     - assets/img/informasi1.jpg
     - assets/img/informasi2.png
@@ -112,6 +113,7 @@ flutter:
     - assets/img/splash2.png
     - assets/img/mapp.jpg
     - assets/img/google.png
+    - assets/img/sejarah.jpg
     - assets/images/
     - assets/images/poci_tahu_aci.jpg
     - assets/images/gribigian.jpg

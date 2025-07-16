@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:sibatikgal/app/data/config/app_config.dart';
 import 'package:sibatikgal/app/modules/informasi/controllers/informasi_controller.dart';
 import 'package:sibatikgal/app/modules/informasi/views/detail_informasi_view.dart';
@@ -20,10 +21,11 @@ class InformasiView extends GetView<InformasiController> {
         title: const Text(
           'Informasi',
           style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'Poppins',
-              fontSize: 20,
-              fontWeight: FontWeight.bold),
+            color: Colors.black,
+            fontFamily: 'Poppins',
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         centerTitle: false,
       ),
@@ -31,31 +33,50 @@ class InformasiView extends GetView<InformasiController> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(10),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: const TextField(
+            Material(
+              elevation: 2,
+              borderRadius: BorderRadius.circular(12),
+              child: TextField(
+                controller: controller.searchController,
+                onChanged: (value) => controller.searchQuery.value = value,
                 decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: 'Search',
-                  prefixIcon: Icon(Icons.search),
+                  hintText: 'Cari informasi',
+                  prefixIcon: const Icon(Icons.search, color: Colors.black54),
+                  contentPadding: const EdgeInsets.symmetric(vertical: 14),
+                  filled: true,
+                  fillColor: Colors.white,
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: Colors.transparent),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: Colors.blueAccent),
+                  ),
+                ),
+                style: const TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 14,
                 ),
               ),
             ),
             const SizedBox(height: 20),
             Expanded(
               child: Obx(() {
-                if (controller.articles.isEmpty) {
-                  return const Center(child: CircularProgressIndicator());
+                if (controller.filteredArticles.isEmpty) {
+                  return Center(
+                    child: SizedBox(
+                      width: 130,
+                      height: 130,
+                      child: Lottie.asset('assets/animations/loading.json'),
+                    ),
+                  );
                 }
 
                 return ListView.builder(
-                  itemCount: controller.articles.length,
+                  itemCount: controller.filteredArticles.length,
                   itemBuilder: (context, index) {
-                    final article = controller.articles[index];
+                    final article = controller.filteredArticles[index];
                     return _buildInformasiCard(article);
                   },
                 );

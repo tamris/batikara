@@ -24,10 +24,15 @@ class ScanPageController extends GetxController {
 
   DateTime lastDetectionTime =
       DateTime.now().subtract(const Duration(seconds: 5));
+  String _lastSavedLabel = '';
+  DateTime _lastSavedTime =
+      DateTime.now().subtract(const Duration(seconds: 10));
 
   Future<void> startDeteksi() async {
     started.value = true;
     _elapsedSeconds = 0;
+    _lastSavedLabel = '';
+    _lastSavedTime = DateTime.now().subtract(const Duration(seconds: 10));
     await _initCamera();
   }
 
@@ -38,11 +43,9 @@ class ScanPageController extends GetxController {
       isCameraInitialized.value = false;
     }
 
-    // 🔁 Reset nilai hasil deteksi ke awal
     label.value = '';
     confidence.value = 0.0;
     makna.value = '';
-
     started.value = false;
   }
 
@@ -52,12 +55,13 @@ class ScanPageController extends GetxController {
       currentCameraIndex = 0;
 
       cameraController = CameraController(
-          cameras[currentCameraIndex], ResolutionPreset.medium);
+        cameras[currentCameraIndex],
+        ResolutionPreset.medium,
+      );
       await cameraController.initialize();
       await cameraController.setFlashMode(FlashMode.auto);
 
       isCameraInitialized.value = true;
-
       _startRealtimeDetection();
     } catch (e) {
       Get.snackbar('Error', 'Gagal inisialisasi kamera: $e');
@@ -67,17 +71,19 @@ class ScanPageController extends GetxController {
   Future<void> swapCamera() async {
     if (cameras.isEmpty) return;
 
-    _timer?.cancel(); // hentikan deteksi sementara
+    _timer?.cancel();
 
     try {
       await cameraController.dispose();
       currentCameraIndex = (currentCameraIndex + 1) % cameras.length;
       cameraController = CameraController(
-          cameras[currentCameraIndex], ResolutionPreset.medium);
+        cameras[currentCameraIndex],
+        ResolutionPreset.medium,
+      );
       await cameraController.initialize();
       isCameraInitialized.value = true;
 
-      _startRealtimeDetection(); // lanjut deteksi dengan kamera baru
+      _startRealtimeDetection();
     } catch (e) {
       Get.snackbar('Error', 'Gagal ganti kamera: $e');
     }
@@ -91,8 +97,8 @@ class ScanPageController extends GetxController {
         return;
       }
 
-      // Cek apakah sudah 5 detik sejak deteksi terakhir
-      if (DateTime.now().difference(lastDetectionTime).inSeconds < 3) return;
+      // ⏱️ Deteksi hanya dilakukan setiap 5 detik
+      if (DateTime.now().difference(lastDetectionTime).inSeconds < 5) return;
 
       try {
         final file = await _captureImage();
@@ -118,15 +124,20 @@ class ScanPageController extends GetxController {
   Future<void> _deteksi(File image) async {
     final result = await DeteksiService.deteksiBatik(image);
     if (result['success']) {
-      label.value = result['label'];
-      confidence.value =
+      final detectedLabel = result['label'];
+      final detectedConfidence =
           double.tryParse(result['confidence'].toString()) ?? 0.0;
 
-      if (label.value == 'Bukan Batik Tegalan') {
-        makna.value =
-            'Motif yang terdeteksi bukan merupakan bagian dari Batik Tegalan.';
-      } else {
-        makna.value = result['makna'] ?? 'Makna tidak tersedia';
+      label.value = detectedLabel;
+      confidence.value = detectedConfidence;
+      makna.value = result['makna'] ?? 'Makna tidak tersedia';
+
+      // ❌ Jangan simpan duplikat label dalam 10 detik terakhir
+      if (_lastSavedLabel != detectedLabel ||
+          DateTime.now().difference(_lastSavedTime).inSeconds >= 10) {
+        await DeteksiService.simpanRiwayat(image);
+        _lastSavedLabel = detectedLabel;
+        _lastSavedTime = DateTime.now();
       }
     } else {
       label.value = 'Error';

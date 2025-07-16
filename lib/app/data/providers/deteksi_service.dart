@@ -47,4 +47,9 @@ class DeteksiService {
       };
     }
   }
+
+  static Future<void> simpanRiwayat(File imageFile) async {
+    // Sama dengan deteksi, karena penyimpanan dilakukan di backend `/predict`
+    await deteksiBatik(imageFile);
+  }
 }
